@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Mini DAW - Instrumental Synth</title>
+  <title>Estudio Multipista Táctil</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- PANTALLA 1: SELECCIÓN -->
+  <!-- PANTALLA 1: MENÚ PRINCIPAL -->
   <div id="screen-select" class="screen active">
-    <h1>Crea tu Banda: Mini DAW</h1>
+    <h1>Estudio Multipista</h1>
     <p>Selecciona un instrumento para comenzar</p>
     <div class="menu-grid">
-      <button onclick="openInstrument('arpa')">𝄢 Arpa Pitagórica (Haces de Luz)</button>
+      <button onclick="openInstrument('arpa')">𝄢 Arpa Pitagórica</button>
       <button onclick="openInstrument('guitarra')">𝄡 Guitarra Rítmica</button>
+      <button onclick="openInstrument('bajo')">🎸 Bajo Metálico</button>
+      <button onclick="openInstrument('bateria')">🥁 Batería Táctil</button>
     </div>
   </div>
 
@@ -22,21 +24,22 @@
   <div id="screen-arpa" class="screen">
     <header class="top-bar">
       <button class="btn-back" onclick="closeInstrument()">← Menú</button>
-      <div class="tempo-box">BPM: <span id="bpm-val">120</span></div>
-      <button id="btn-metro-arpa" onclick="toggleMetro()">Metro: OFF</button>
+      <div class="octave-controls">
+        <button onclick="shiftOctaveHarp(-1)">OCT -</button>
+        <span id="oct-label-arpa">OCT: 0</span>
+        <button onclick="shiftOctaveHarp(1)">OCT +</button>
+      </div>
       <button id="btn-bars-arpa" onclick="cycleBars('arpa')">1 COMP</button>
     </header>
 
-    <main class="canvas-container">
+    <main class="harp-container">
       <canvas id="canvas-arpa"></canvas>
     </main>
 
-    <!-- BARRA INFERIOR / REC & CONTROLES -->
     <footer class="bottom-bar">
       <button class="btn-rec" onclick="startRec('arpa', false)">● REC</button>
       <button class="btn-rec-count" onclick="startRec('arpa', true)">⏱ REC 1234</button>
 
-      <!-- CONTROLES MÍNIMOS DE ALMACENAMIENTO (OCULTOS HASTA DETENER) -->
       <div id="save-controls-arpa" class="save-controls hidden">
         <button class="btn-no" onclick="discardTake('arpa')">NO ✖</button>
         <button class="btn-save" onclick="promptSave('arpa')">GUARDAR ✓</button>
@@ -48,21 +51,41 @@
   <div id="screen-guitarra" class="screen">
     <header class="top-bar">
       <button class="btn-back" onclick="closeInstrument()">← Menú</button>
-      <div class="tempo-box">BPM: 120</div>
-      <button id="btn-metro-guit" onclick="toggleMetro()">Metro: OFF</button>
+
+      <!-- SELECTOR DE AFINACIÓN / TEMPERAMENTO -->
+      <div class="pitch-selector">
+        <label for="select-pitch">Base:</label>
+        <select id="select-pitch" onchange="changePitchBase(this.value)">
+          <option value="256">256Hz (Pitagórica)</option>
+          <option value="440" selected>440Hz (Estándar A440)</option>
+        </select>
+      </div>
+
       <button id="btn-bars-guit" onclick="cycleBars('guitarra')">1 COMP</button>
     </header>
 
     <main class="guitar-container">
-      <!-- PANEL IZQUIERDO: ACORDES -->
+      <!-- PANEL IZQUIERDO: CONTROLES DE ACORDES -->
       <div class="chords-panel">
-        <button class="btn-chord active" onclick="selectChord('C')">Do Maj</button>
-        <button class="btn-chord" onclick="selectChord('Am')">Lam Min</button>
-        <button class="btn-chord" onclick="selectChord('F')">Fa Maj</button>
-        <button class="btn-chord" onclick="selectChord('G5')">Sol 5ta</button>
+        <div id="current-chord-display" class="chord-title">C Maj</div>
+        
+        <div class="root-selector">
+          <button onclick="setChordRoot('C')">C</button>
+          <button onclick="setChordRoot('D')">D</button>
+          <button onclick="setChordRoot('E')">E</button>
+          <button onclick="setChordRoot('F')">F</button>
+          <button onclick="setChordRoot('G')">G</button>
+          <button onclick="setChordRoot('A')">A</button>
+          <button onclick="setChordRoot('B')">B</button>
+        </div>
+
+        <div class="type-selector">
+          <button id="btn-type-maj" class="btn-type active" onclick="setChordType('Maj')">MAYOR</button>
+          <button id="btn-type-min" class="btn-type" onclick="setChordType('Min')">MENOR</button>
+        </div>
       </div>
 
-      <!-- PANEL DERECHO: ÁREA DE RASGUEO -->
+      <!-- PANEL DERECHO: CANVASES DE RASGUEO -->
       <div class="strum-panel">
         <canvas id="canvas-guitarra"></canvas>
       </div>
@@ -75,6 +98,56 @@
       <div id="save-controls-guitarra" class="save-controls hidden">
         <button class="btn-no" onclick="discardTake('guitarra')">NO ✖</button>
         <button class="btn-save" onclick="promptSave('guitarra')">GUARDAR ✓</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- PANTALLA 4: BAJO METÁLICO -->
+  <div id="screen-bajo" class="screen">
+    <header class="top-bar">
+      <button class="btn-back" onclick="closeInstrument()">← Menú</button>
+      <div class="tempo-box">BPM: 120</div>
+      <button id="btn-bars-bajo" onclick="cycleBars('bajo')">1 COMP</button>
+    </header>
+
+    <main class="fretboard-container">
+      <canvas id="canvas-bajo"></canvas>
+    </main>
+
+    <footer class="bottom-bar">
+      <button class="btn-rec" onclick="startRec('bajo', false)">● REC</button>
+      <button class="btn-rec-count" onclick="startRec('bajo', true)">⏱ REC 1234</button>
+
+      <div id="save-controls-bajo" class="save-controls hidden">
+        <button class="btn-no" onclick="discardTake('bajo')">NO ✖</button>
+        <button class="btn-save" onclick="promptSave('bajo')">GUARDAR ✓</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- PANTALLA 5: BATERÍA TÁCTIL -->
+  <div id="screen-bateria" class="screen">
+    <header class="top-bar">
+      <button class="btn-back" onclick="closeInstrument()">← Menú</button>
+      <button id="btn-hihat" class="btn-hihat" onclick="cycleHiHat()">HI-HAT: OFF</button>
+      <button id="btn-bars-bat" onclick="cycleBars('bateria')">1 COMP</button>
+    </header>
+
+    <main class="drum-kit-grid">
+      <button class="drum-pad crash" onclick="playDrum('crash')">CRASH</button>
+      <button class="drum-pad ride" onclick="playDrum('ride')">RIDE</button>
+      <button class="drum-pad fill" onclick="playDrum('fill')">⚡ REPIQUE / FILL</button>
+      <button class="drum-pad snare" onclick="playDrum('snare')">CAJA / SNARE</button>
+      <button class="drum-pad kick" onclick="playDrum('kick')">BOMBO / KICK</button>
+    </main>
+
+    <footer class="bottom-bar">
+      <button class="btn-rec" onclick="startRec('bateria', false)">● REC</button>
+      <button class="btn-rec-count" onclick="startRec('bateria', true)">⏱ REC 1234</button>
+
+      <div id="save-controls-bateria" class="save-controls hidden">
+        <button class="btn-no" onclick="discardTake('bateria')">NO ✖</button>
+        <button class="btn-save" onclick="promptSave('bateria')">GUARDAR ✓</button>
       </div>
     </footer>
   </div>
