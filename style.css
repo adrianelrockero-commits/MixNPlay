@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  background-color: #090a0f;
+  color: #fff;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.screen.active {
+  display: flex;
+}
+
+/* MENÚ PRINCIPAL */
+#screen-select {
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  text-align: center;
+}
+
+.menu-grid button {
+  display: block;
+  width: 280px;
+  padding: 18px;
+  margin: 12px 0;
+  background: #161925;
+  border: 1px solid #00f0ff;
+  border-radius: 8px;
+  color: #00f0ff;
+  font-size: 16px;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(0,240,255,0.2);
+}
+
+/* BARRAS DE CONTROL */
+.top-bar, .bottom-bar {
+  height: 50px;
+  background: #11131d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  border-bottom: 1px solid #222536;
+}
+
+.bottom-bar {
+  border-bottom: none;
+  border-top: 1px solid #222536;
+}
+
+button {
+  background: #1f2333;
+  color: #fff;
+  border: 1px solid #3b4261;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.btn-rec { background: #801515; border-color: #ff4444; }
+.btn-rec-count { background: #5c3a13; border-color: #ffbb33; }
+
+/* CONTROLES RÁPIDOS DE GUARDADO */
+.save-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.hidden { display: none !important; }
+
+.btn-no { background: #4a1515; color: #ff6666; border-color: #ff4444; }
+.btn-save { background: #154a21; color: #66ff88; border-color: #44ff66; }
+
+/* LIENZOS */
+.canvas-container, .strum-panel {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* GUITARRA LAYOUT */
+.guitar-container {
+  flex: 1;
+  display: flex;
+}
+
+.chords-panel {
+  width: 100px;
+  background: #0d0e17;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-right: 1px solid #222536;
+}
+
+.btn-chord {
+  flex: 1;
+  background: #161925;
+  border: 1px solid #2a2f45;
+}
+
+.btn-chord.active {
+  background: #00f0ff;
+  color: #000;
+  border-color: #00f0ff;
+  box-shadow: 0 0 8px #00f0ff;
+}
