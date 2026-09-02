@@ -3,27 +3,55 @@
   margin: 0;
   padding: 0;
   user-select: none;
-  -webkit-user-select: none;
-  font-family: system-ui, -apple-system, sans-serif;
+  touch-action: manipulation;
 }
 
 body, html {
   width: 100%;
   height: 100%;
-  background-color: #090a0f;
+  background: #0b0c10;
   color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   overflow: hidden;
 }
 
+/* GESTIÓN DE PANTALLAS */
 .screen {
   display: none;
   width: 100vw;
   height: 100vh;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .screen.active {
   display: flex;
+}
+
+/* BARRA SUPERIOR E INFERIOR */
+.top-bar, .bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #1f2430;
+  height: 50px;
+  z-index: 10;
+}
+
+.btn-back, button {
+  background: #2d3748;
+  color: #fff;
+  border: 1px solid #4a5568;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+button:active {
+  background: #4a5568;
 }
 
 /* MENÚ PRINCIPAL */
@@ -31,69 +59,53 @@ body, html {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  padding: 20px;
   text-align: center;
 }
 
-.menu-grid button {
-  display: block;
-  width: 280px;
-  padding: 18px;
-  margin: 12px 0;
-  background: #161925;
-  border: 1px solid #00f0ff;
-  border-radius: 8px;
-  color: #00f0ff;
-  font-size: 16px;
-  font-weight: bold;
-  box-shadow: 0 0 10px rgba(0,240,255,0.2);
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  width: 80%;
+  max-width: 400px;
 }
 
-/* BARRAS DE CONTROL */
-.top-bar, .bottom-bar {
-  height: 50px;
-  background: #11131d;
+.menu-grid button {
+  padding: 18px;
+  font-size: 16px;
+  background: #1a202c;
+  border-color: #00f0ff;
+  color: #00f0ff;
+}
+
+/* SELECTOR DE AFINACIÓN Y OCTAVAS */
+.pitch-selector {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  border-bottom: 1px solid #222536;
-}
-
-.bottom-bar {
-  border-bottom: none;
-  border-top: 1px solid #222536;
-}
-
-button {
-  background: #1f2333;
-  color: #fff;
-  border: 1px solid #3b4261;
-  padding: 8px 12px;
-  border-radius: 6px;
+  gap: 6px;
   font-size: 12px;
-  font-weight: bold;
 }
 
-.btn-rec { background: #801515; border-color: #ff4444; }
-.btn-rec-count { background: #5c3a13; border-color: #ffbb33; }
+.pitch-selector select {
+  background: #0f172a;
+  color: #00f0ff;
+  border: 1px solid #00f0ff;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 12px;
+}
 
-/* CONTROLES RÁPIDOS DE GUARDADO */
-.save-controls {
+.octave-controls {
   display: flex;
+  align-items: center;
   gap: 8px;
+  font-size: 13px;
 }
 
-.hidden { display: none !important; }
-
-.btn-no { background: #4a1515; color: #ff6666; border-color: #ff4444; }
-.btn-save { background: #154a21; color: #66ff88; border-color: #44ff66; }
-
-/* LIENZOS */
-.canvas-container, .strum-panel {
+/* CONTENEDOR DE ARPA Y BAJO */
+.harp-container, .fretboard-container {
   flex: 1;
   width: 100%;
-  height: 100%;
   position: relative;
 }
 
@@ -103,31 +115,130 @@ canvas {
   display: block;
 }
 
-/* GUITARRA LAYOUT */
+/* ESTRUCTURA PANTALLA GUITARRA */
 .guitar-container {
   flex: 1;
   display: flex;
+  width: 100%;
+  height: calc(100vh - 100px);
 }
 
 .chords-panel {
-  width: 100px;
-  background: #0d0e17;
+  width: 35%;
+  background: #141824;
+  padding: 8px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  border-right: 1px solid #222536;
+  gap: 8px;
+  border-right: 2px solid #2d3748;
 }
 
-.btn-chord {
+.chord-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #00f0ff;
+  background: #0b0c10;
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.root-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+
+.root-selector button {
+  padding: 8px 0;
+  font-size: 12px;
+}
+
+.type-selector {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-type {
   flex: 1;
-  background: #161925;
-  border: 1px solid #2a2f45;
+  padding: 8px 0;
+  font-size: 11px;
 }
 
-.btn-chord.active {
+.btn-type.active {
   background: #00f0ff;
   color: #000;
   border-color: #00f0ff;
-  box-shadow: 0 0 8px #00f0ff;
+}
+
+.strum-panel {
+  width: 65%;
+  height: 100%;
+  background: #08090c;
+}
+
+/* PANTALLA BATERÍA */
+.drum-kit-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1.2fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+.drum-pad {
+  background: #1f2430;
+  border: 2px solid #3b4252;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.drum-pad:active {
+  background: #00f0ff;
+  color: #000;
+}
+
+.drum-pad.fill {
+  grid-column: span 2;
+  background: #3b2d54;
+  border-color: #9d65c9;
+  color: #d8b4fe;
+}
+
+.drum-pad.kick {
+  grid-column: span 2;
+  background: #501d1d;
+  border-color: #ff4444;
+}
+
+/* BOTONES DE GRABACIÓN Y GUARDADO */
+.btn-rec {
+  background: #9b2c2c;
+  border-color: #e53e3e;
+}
+
+.btn-rec-count {
+  background: #742a2a;
+  border-color: #c53030;
+}
+
+.save-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.save-controls.hidden {
+  display: none;
+}
+
+.btn-no {
+  background: #4a5568;
+}
+
+.btn-save {
+  background: #276749;
+  border-color: #38a169;
 }
