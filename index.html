@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mini DAW - Instrumental Synth</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- PANTALLA 1: SELECCIÓN -->
+  <div id="screen-select" class="screen active">
+    <h1>Crea tu Banda: Mini DAW</h1>
+    <p>Selecciona un instrumento para comenzar</p>
+    <div class="menu-grid">
+      <button onclick="openInstrument('arpa')">𝄢 Arpa Pitagórica (Haces de Luz)</button>
+      <button onclick="openInstrument('guitarra')">𝄡 Guitarra Rítmica</button>
+    </div>
+  </div>
+
+  <!-- PANTALLA 2: ARPA PITAGÓRICA -->
+  <div id="screen-arpa" class="screen">
+    <header class="top-bar">
+      <button class="btn-back" onclick="closeInstrument()">← Menú</button>
+      <div class="tempo-box">BPM: <span id="bpm-val">120</span></div>
+      <button id="btn-metro-arpa" onclick="toggleMetro()">Metro: OFF</button>
+      <button id="btn-bars-arpa" onclick="cycleBars('arpa')">1 COMP</button>
+    </header>
+
+    <main class="canvas-container">
+      <canvas id="canvas-arpa"></canvas>
+    </main>
+
+    <!-- BARRA INFERIOR / REC & CONTROLES -->
+    <footer class="bottom-bar">
+      <button class="btn-rec" onclick="startRec('arpa', false)">● REC</button>
+      <button class="btn-rec-count" onclick="startRec('arpa', true)">⏱ REC 1234</button>
+
+      <!-- CONTROLES MÍNIMOS DE ALMACENAMIENTO (OCULTOS HASTA DETENER) -->
+      <div id="save-controls-arpa" class="save-controls hidden">
+        <button class="btn-no" onclick="discardTake('arpa')">NO ✖</button>
+        <button class="btn-save" onclick="promptSave('arpa')">GUARDAR ✓</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- PANTALLA 3: GUITARRA RÍTMICA -->
+  <div id="screen-guitarra" class="screen">
+    <header class="top-bar">
+      <button class="btn-back" onclick="closeInstrument()">← Menú</button>
+      <div class="tempo-box">BPM: 120</div>
+      <button id="btn-metro-guit" onclick="toggleMetro()">Metro: OFF</button>
+      <button id="btn-bars-guit" onclick="cycleBars('guitarra')">1 COMP</button>
+    </header>
+
+    <main class="guitar-container">
+      <!-- PANEL IZQUIERDO: ACORDES -->
+      <div class="chords-panel">
+        <button class="btn-chord active" onclick="selectChord('C')">Do Maj</button>
+        <button class="btn-chord" onclick="selectChord('Am')">Lam Min</button>
+        <button class="btn-chord" onclick="selectChord('F')">Fa Maj</button>
+        <button class="btn-chord" onclick="selectChord('G5')">Sol 5ta</button>
+      </div>
+
+      <!-- PANEL DERECHO: ÁREA DE RASGUEO -->
+      <div class="strum-panel">
+        <canvas id="canvas-guitarra"></canvas>
+      </div>
+    </main>
+
+    <footer class="bottom-bar">
+      <button class="btn-rec" onclick="startRec('guitarra', false)">● REC</button>
+      <button class="btn-rec-count" onclick="startRec('guitarra', true)">⏱ REC 1234</button>
+
+      <div id="save-controls-guitarra" class="save-controls hidden">
+        <button class="btn-no" onclick="discardTake('guitarra')">NO ✖</button>
+        <button class="btn-save" onclick="promptSave('guitarra')">GUARDAR ✓</button>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
